@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReHub - Add New Product</title>
+  <link rel="stylesheet" href="post.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h1 class="brand">ReHub</h1>
+    <h2>Add New Product</h2>
+    
+    <form>
+      <label for="title">Product Title:</label>
+      <input type="text" id="title" name="title" /> <br><br>
+
+      <label for="price">Price:</label>
+      <input type="text" id="price" name="price" /><br><br>
+
+      <label for="condition">Condition:</label>
+      <input type="text" id="condition" name="condition" /><br><br>
+
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option>Select</option>
+        <option>Electronics</option>
+        <option>Clothing</option>
+        <option>Books</option>
+      </select><br><br>
+
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" /><br><br>
+
+      <label>Upload Image:</label>
+<input type="file" id="mainImage" name="mainImage" class="upload-image" accept="image/*" />
+<br><br>
+      <label>Select photo section:</label>
+<input type="file" id="multiImage" name="multiImage[]" multiple accept="image/*" />
+<div id="multiImagePreview" class="preview-grid"></div>
+<br><br>
+
+<img id="mainImagePreview" src="#" alt="Image Preview" style="display:none; width:150px; height:auto; border:1px solid #ccc; border-radius:4px; margin-top:10px;" />
+<br><br>
+
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description"></textarea><br><br>
+
+      <button type="submit" class="upload-btn">Upload</button><br><br>
+    </form>
+  </div>
+</body>
+</html>
+<script>
+  const imageInput = document.getElementById('mainImage');
+  const preview = document.getElementById('mainImagePreview');
+
+  imageInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      preview.style.display = 'none';
+    }
+  });
+</script>
+<script>
+  const multiImageInput = document.getElementById('multiImage');
+  const previewContainer = document.getElementById('multiImagePreview');
+
+  multiImageInput.addEventListener('change', function () {
+    previewContainer.innerHTML = ""; // clear previous previews
+    const files = this.files;
+
+    if (files.length < 3) {
+      alert("Please upload at least 3 images.");
+      return;
+    }
+
+    Array.from(files).forEach(file => {
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          previewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+</script>
+
+
